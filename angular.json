@@ -47,13 +47,18 @@
             "main": "apps/sayman-ui/src/main.ts",
             "polyfills": "apps/sayman-ui/src/polyfills.ts",
             "tsConfig": "apps/sayman-ui/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "apps/sayman-ui/src/favicon.ico",
               "apps/sayman-ui/src/assets"
             ],
             "styles": ["apps/sayman-ui/src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -83,7 +88,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
