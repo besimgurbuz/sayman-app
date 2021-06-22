@@ -16,10 +16,29 @@
   z-index: 1;
 }
 
-.toolbar-links {
-  margin-left: auto;
-  display: flex;
-  gap: 0.5rem;
+.content {
+  .toolbar {
+    height: 4rem;
+
+    .toolbar-links {
+      margin-left: auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+
+  #banner {
+    font-size: 20px;
+  }
+
+  #content-root {
+    min-height: calc(100% - 4rem);
+  }
+}
+
+.content {
+  width: 100%;
+  height: 100%;
 }
 
 .hidden {

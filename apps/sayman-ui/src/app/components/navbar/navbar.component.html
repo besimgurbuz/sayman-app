@@ -7,18 +7,20 @@
       <a mat-list-item routerLink="/user" [queryParams]="{action: 'register'}">Register</a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="primary" class="toolbar">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Sayman Application</span>
+      <a id="banner" mat-button routerLink="/">Sayman</a>
       <div class="toolbar-links" [ngClass]="{ hidden: isHandset$ | async }">
         <a mat-button routerLink="/user" [queryParams]="{action: 'login'}">Login</a>
         <a mat-button routerLink="/user" [queryParams]="{action: 'register'}">Register</a>
       </div>
     </mat-toolbar>
-    <!-- Add Content Here -->
+    <div id="content-root">
+      <ng-content></ng-content>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
