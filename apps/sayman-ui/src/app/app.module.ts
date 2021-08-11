@@ -12,6 +12,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { LandingComponent } from './components/landing/landing.component';
+import { BASE_URL_TOKEN } from './base-url.token';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, LandingComponent],
@@ -26,7 +28,12 @@ import { LandingComponent } from './components/landing/landing.component';
     MatIconModule,
     MatListModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: BASE_URL_TOKEN,
+      useValue: `${environment.baseUrl}/api/v1`,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
