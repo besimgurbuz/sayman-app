@@ -1,0 +1,22 @@
+@import '../../variables';
+
+:host {
+  display: block;
+}
+
+.card-view {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 2rem;
+
+  @media screen and (max-width: $breakpoint-phone) {
+    padding: 0.5rem;
+  }
+
+  .card-view-header {
+  }
+
+  .card-view-body {
+  }
+}
