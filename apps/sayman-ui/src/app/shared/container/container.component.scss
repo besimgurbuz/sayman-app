@@ -1,0 +1,15 @@
+@import '../../variables';
+
+:host {
+  display: block;
+}
+
+.container {
+  display: flex;
+  padding: 1rem 2rem;
+  height: fit-content;
+
+  @media screen and (max-width: $breakpoint-phone) {
+    padding: 1rem;
+  }
+}
