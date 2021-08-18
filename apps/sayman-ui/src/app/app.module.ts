@@ -11,13 +11,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 import { LandingComponent } from './components/landing/landing.component';
-import { BASE_URL_TOKEN } from './base-url.token';
+import { BASE_URL_TOKEN } from './tokens';
 import { environment } from '../environments/environment';
+import { CoreModule } from './core/core.module';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, LandingComponent],
   imports: [
+    CoreModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -27,12 +31,14 @@ import { environment } from '../environments/environment';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatMenuModule,
   ],
   providers: [
     {
       provide: BASE_URL_TOKEN,
       useValue: `${environment.baseUrl}/api/v1`,
     },
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
 })
