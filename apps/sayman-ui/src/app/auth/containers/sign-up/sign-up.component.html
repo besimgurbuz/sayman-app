@@ -1,3 +1,50 @@
-<sayman-app-container>
-  <h1>Sign up!</h1>
+<sayman-app-container justifyContent="center">
+  <sayman-app-card-view>
+    <ng-container header>
+      <h2>It'll be great to have you in Sayman, let's register you!</h2>
+    </ng-container>
+    <ng-container body>
+      <form
+        class="register-form"
+        [formGroup]="signUpGroup"
+        (ngSubmit)="handleRegister()"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            type="text"
+            name="username"
+            formControlName="username"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Passoword</mat-label>
+          <input
+            matInput
+            type="password"
+            name="password"
+            formControlName="password"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Confirm password</mat-label>
+          <input
+            matInput
+            type="password"
+            name="confirmPassword"
+            formControlName="confirmPassword"
+          />
+        </mat-form-field>
+        <button
+          mat-button
+          type="submit"
+          color="accent"
+          [disabled]="signUpGroup.invalid"
+        >
+          Register
+        </button>
+      </form>
+    </ng-container>
+  </sayman-app-card-view>
 </sayman-app-container>
