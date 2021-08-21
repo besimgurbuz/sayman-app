@@ -1,9 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, tap } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -15,6 +21,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   loginFormGroup: FormGroup;
   authenticationSubs: Subscription;
   redirectedSubs: Subscription;
+  invalidCredentials = false;
 
   constructor(
     private fb: FormBuilder,
@@ -63,7 +70,10 @@ export class SignInComponent implements OnInit, OnDestroy {
       const { username, password } = this.loginFormGroup.controls;
       this.authenticationSubs = this.authService
         .authenticate(username.value, password.value)
-        .subscribe(() => this.router.navigate(['/dashboard']));
+        .subscribe(
+          () => this.router.navigate(['/dashboard']),
+          () => (this.invalidCredentials = true)
+        );
     }
   }
 }

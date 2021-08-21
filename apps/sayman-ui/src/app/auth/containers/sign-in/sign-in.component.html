@@ -4,18 +4,46 @@
       <h2>Welcome to the Sayman, let's log you in!</h2>
     </ng-container>
     <ng-container body>
-      <form class="login-form" [formGroup]="loginFormGroup" (ngSubmit)="handleLogin()">
+      <form
+        class="login-form"
+        [formGroup]="loginFormGroup"
+        (ngSubmit)="handleLogin()"
+      >
+        <div class="error-message" *ngIf="invalidCredentials">
+          Username or password is incorrect.
+        </div>
         <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
-          <input matInput type="text" name="username" formControlName="username">
+          <input
+            matInput
+            type="text"
+            name="username"
+            formControlName="username"
+          />
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
-          <input matInput type="password" name="password" formControlName="password">
-          <mat-hint align="end">Don't have an account yet? <a class="register-link"
-              routerLink="/user/register">Register</a></mat-hint>
+          <input
+            matInput
+            type="password"
+            name="password"
+            formControlName="password"
+          />
+          <mat-hint align="end"
+            >Don't have an account yet?
+            <a class="register-link" routerLink="/user/register"
+              >Register</a
+            ></mat-hint
+          >
         </mat-form-field>
-        <button mat-button type="submit">Login</button>
+        <button
+          mat-button
+          type="submit"
+          color="accent"
+          [disabled]="loginFormGroup.invalid"
+        >
+          Login
+        </button>
       </form>
     </ng-container>
   </sayman-app-card-view>
