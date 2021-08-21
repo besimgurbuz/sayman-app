@@ -17,6 +17,12 @@
             name="username"
             formControlName="username"
           />
+          <mat-error *ngIf="signUpGroup.controls.username.invalid">
+            <sayman-app-form-error
+              [control]="signUpGroup.controls.username"
+              [errorMessages]="signUpFormErrorMessages.username"
+            ></sayman-app-form-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Passoword</mat-label>
@@ -26,6 +32,12 @@
             name="password"
             formControlName="password"
           />
+          <mat-error *ngIf="signUpGroup.controls.password.invalid">
+            <sayman-app-form-error
+              [control]="signUpGroup.controls.password"
+              [errorMessages]="signUpFormErrorMessages.password"
+            ></sayman-app-form-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Confirm password</mat-label>
@@ -36,6 +48,15 @@
             formControlName="confirmPassword"
           />
         </mat-form-field>
+        <p
+          class="general-form-error"
+          *ngIf="
+            signUpGroup.controls.confirmPassword.dirty &&
+            signUpGroup?.errors?.fieldsNotMatched
+          "
+        >
+          {{ signUpFormErrorMessages?.general?.fieldsNotMatched }}
+        </p>
         <button
           mat-button
           type="submit"

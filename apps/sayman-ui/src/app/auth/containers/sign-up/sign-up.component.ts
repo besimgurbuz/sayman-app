@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ValidationErrors,
@@ -21,6 +22,22 @@ import { ValidateFieldsAreMatched } from '../../../shared/form-validators/match.
 })
 export class SignUpComponent implements OnInit {
   signUpGroup: FormGroup;
+  signUpFormErrorMessages: Record<string, unknown> = {
+    general: {
+      fieldsNotMatched:
+        'Password confirmation failed. Confirmation must be the same as the password',
+    },
+    username: {
+      minlength: 'Username must be at least 5 characters long',
+      maxlength: 'Username can be up to 12 characters long',
+      includesInvalidChars:
+        'Username cannot contain invalid characters. (!, ", £, $, etc.)',
+      startsWithInvalidChars: "Username cannot start with a number or '.'",
+    },
+    password: {
+      minlength: 'Password must be at least 8 characters long',
+    },
+  };
 
   constructor(
     private fb: FormBuilder,
