@@ -25,6 +25,17 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
+          <mat-label>E-mail</mat-label>
+          <input matInput type="email" name="email" formControlName="email" />
+          <mat-error *ngIf="signUpGroup.controls.email.invalid">
+            <sayman-app-form-error
+              [control]="signUpGroup.controls.email"
+              [errorMessages]="signUpFormErrorMessages.email"
+            >
+            </sayman-app-form-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
           <mat-label>Passoword</mat-label>
           <input
             matInput

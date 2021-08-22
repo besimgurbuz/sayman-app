@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import {
   COMMON_BLOCKED_INCLUDE_LETTERS,
-  COMMON_BLOCKED_STARTS_WITH_LETTERS,
+  COMMON_BLOCKED_START_OR_END_WITH_LETTERS,
   ValidateStringByBlockList,
 } from '../../../shared/form-validators/common-string.validator';
 import { ValidateFieldsAreMatched } from '../../../shared/form-validators/match.validator';
+import { User } from '../../models/user.model';
+import { RegisterService } from '../../services/register.service';
 
 @Component({
   selector: 'sayman-app-sign-up',
@@ -29,10 +25,14 @@ export class SignUpComponent implements OnInit {
     },
     username: {
       minlength: 'Username must be at least 5 characters long',
-      maxlength: 'Username can be up to 12 characters long',
+      maxlength: 'Username can be up to 20 characters long',
       includesInvalidChars:
         'Username cannot contain invalid characters. (!, ", £, $, etc.)',
-      startsWithInvalidChars: "Username cannot start with a number or '.'",
+      startsWithInvalidChars: 'Username cannot start with a dot',
+      endsWithInvalidChars: 'Username cannot end with a dot',
+    },
+    email: {
+      email: 'Email should be valid',
     },
     password: {
       minlength: 'Password must be at least 8 characters long',
@@ -42,6 +42,7 @@ export class SignUpComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private registerService: RegisterService,
     private router: Router
   ) {}
 
@@ -58,7 +59,7 @@ export class SignUpComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(5),
-            Validators.maxLength(12),
+            Validators.maxLength(20),
             ValidateStringByBlockList(
               COMMON_BLOCKED_INCLUDE_LETTERS,
               'includesInvalidChars',
@@ -66,13 +67,20 @@ export class SignUpComponent implements OnInit {
                 blockedList.some((blocked) => value.includes(blocked))
             ),
             ValidateStringByBlockList(
-              COMMON_BLOCKED_STARTS_WITH_LETTERS,
+              COMMON_BLOCKED_START_OR_END_WITH_LETTERS,
               'startsWithInvalidChars',
               (blockedList: string[], value) =>
                 blockedList.some((blocked) => value.startsWith(blocked))
             ),
+            ValidateStringByBlockList(
+              COMMON_BLOCKED_START_OR_END_WITH_LETTERS,
+              'endsWithInvalidChars',
+              (blockedList: string[], value) =>
+                blockedList.some((blocked) => value.endsWith(blocked))
+            ),
           ],
         ],
+        email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
       },
@@ -83,6 +91,16 @@ export class SignUpComponent implements OnInit {
   }
 
   handleRegister() {
-    console.log(this.signUpGroup);
+    if (!this.signUpGroup.invalid) {
+      const newUser: User = {
+        username: this.signUpGroup.controls.username.value,
+        email: this.signUpGroup.controls.email.value,
+        password: this.signUpGroup.controls.password.value,
+      };
+
+      this.registerService
+        .register(newUser)
+        .subscribe((res) => console.log(res));
+    }
   }
 }

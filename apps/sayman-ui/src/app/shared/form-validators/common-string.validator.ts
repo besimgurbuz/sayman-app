@@ -29,18 +29,7 @@ export const COMMON_BLOCKED_INCLUDE_LETTERS: string[] = [
   '+',
 ];
 
-export const COMMON_BLOCKED_STARTS_WITH_LETTERS: string[] = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '.',
-];
+export const COMMON_BLOCKED_START_OR_END_WITH_LETTERS: string[] = ['.'];
 
 export function ValidateStringByBlockList(
   blockList: string[],
