@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -52,7 +53,7 @@ export class SignInComponent implements OnInit, OnDestroy {
             'Close',
             {
               horizontalPosition: 'center',
-              verticalPosition: 'top',
+              verticalPosition: 'bottom',
             }
           )
         )
@@ -72,7 +73,22 @@ export class SignInComponent implements OnInit, OnDestroy {
         .authenticate(username.value, password.value)
         .subscribe(
           () => this.router.navigate(['/dashboard']),
-          () => (this.invalidCredentials = true)
+          (error: HttpErrorResponse) => {
+            let message = 'Username or password is incorrect.';
+            let panelClass = '';
+
+            if (error.status === 500 || error.status === 0) {
+              message =
+                'We are currently not able to log you in. Try again later.';
+              panelClass = 'internal-error-modal';
+            }
+
+            this._snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              panelClass: panelClass,
+            });
+          }
         );
     }
   }

@@ -10,3 +10,13 @@
   width: 100%;
   z-index: 9;
 }
+
+::ng-deep snack-bar-container.internal-error-modal {
+  border: 2px solid #f44336;
+  background-color: #f1f1f1;
+  color: #f44336;
+
+  button {
+    color: #f44336;
+  }
+}

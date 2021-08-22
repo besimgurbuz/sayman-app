@@ -9,9 +9,6 @@
         [formGroup]="loginFormGroup"
         (ngSubmit)="handleLogin()"
       >
-        <div class="error-message" *ngIf="invalidCredentials">
-          Username or password is incorrect.
-        </div>
         <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
           <input

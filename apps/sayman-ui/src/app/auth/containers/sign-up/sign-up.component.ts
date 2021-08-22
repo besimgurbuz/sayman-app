@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { ValidateString } from '../../../shared/form-validators/common-string.validator';
 import { ValidateFieldsAreMatched } from '../../../shared/form-validators/match.validator';
@@ -12,8 +14,10 @@ import { RegisterService } from '../../services/register.service';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   signUpGroup: FormGroup;
+  registerSubs: Subscription;
+
   signUpFormErrorMessages: Record<string, unknown> = {
     general: {
       fieldsNotMatched:
@@ -37,7 +41,8 @@ export class SignUpComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private registerService: RegisterService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +72,10 @@ export class SignUpComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.registerSubs?.unsubscribe();
+  }
+
   handleRegister() {
     if (!this.signUpGroup.invalid) {
       const newUser: User = {
@@ -75,9 +84,19 @@ export class SignUpComponent implements OnInit {
         password: this.signUpGroup.controls.password.value,
       };
 
-      this.registerService
-        .register(newUser)
-        .subscribe((res) => console.log(res));
+      this.registerSubs = this.registerService.register(newUser).subscribe(
+        (res) => console.log(res),
+        (error) =>
+          this._snackBar.open(
+            'We are currently unable to fulfill your registration request. Try again later.',
+            'Close',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              panelClass: 'internal-error-modal',
+            }
+          )
+      );
     }
   }
 }
