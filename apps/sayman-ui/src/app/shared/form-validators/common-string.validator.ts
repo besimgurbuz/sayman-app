@@ -1,35 +1,13 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export const COMMON_BLOCKED_INCLUDE_LETTERS: string[] = [
-  '/',
-  '\\',
-  '!',
-  '"',
-  '£',
-  '$',
-  '%',
-  '^',
-  '&',
-  '*',
-  '(',
-  ')',
-  '=',
-  ',',
-  '|',
-  '<',
-  '>',
-  '{',
-  '}',
-  '[',
-  ']',
-  '@',
-  '~',
-  '?',
-  '#',
-  '+',
-];
-
-export const COMMON_BLOCKED_START_OR_END_WITH_LETTERS: string[] = ['.'];
+export function ValidateString(
+  regExp: RegExp,
+  errorKey: string
+): (control: AbstractControl) => ValidationErrors | null {
+  return function (control) {
+    return regExp.test(control.value) ? null : { [errorKey]: true };
+  };
+}
 
 export function ValidateStringByBlockList(
   blockList: string[],

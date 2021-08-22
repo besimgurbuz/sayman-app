@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import {
-  COMMON_BLOCKED_INCLUDE_LETTERS,
-  COMMON_BLOCKED_START_OR_END_WITH_LETTERS,
-  ValidateStringByBlockList,
-} from '../../../shared/form-validators/common-string.validator';
+import { ValidateString } from '../../../shared/form-validators/common-string.validator';
 import { ValidateFieldsAreMatched } from '../../../shared/form-validators/match.validator';
 import { User } from '../../models/user.model';
 import { RegisterService } from '../../services/register.service';
@@ -27,9 +23,7 @@ export class SignUpComponent implements OnInit {
       minlength: 'Username must be at least 5 characters long',
       maxlength: 'Username can be up to 20 characters long',
       includesInvalidChars:
-        'Username cannot contain invalid characters. (!, ", £, $, etc.)',
-      startsWithInvalidChars: 'Username cannot start with a dot',
-      endsWithInvalidChars: 'Username cannot end with a dot',
+        'Username cannot contain invalid characters (!, ", £, $, etc.)',
     },
     email: {
       email: 'Email should be valid',
@@ -60,24 +54,7 @@ export class SignUpComponent implements OnInit {
             Validators.required,
             Validators.minLength(5),
             Validators.maxLength(20),
-            ValidateStringByBlockList(
-              COMMON_BLOCKED_INCLUDE_LETTERS,
-              'includesInvalidChars',
-              (blockedList: string[], value) =>
-                blockedList.some((blocked) => value.includes(blocked))
-            ),
-            ValidateStringByBlockList(
-              COMMON_BLOCKED_START_OR_END_WITH_LETTERS,
-              'startsWithInvalidChars',
-              (blockedList: string[], value) =>
-                blockedList.some((blocked) => value.startsWith(blocked))
-            ),
-            ValidateStringByBlockList(
-              COMMON_BLOCKED_START_OR_END_WITH_LETTERS,
-              'endsWithInvalidChars',
-              (blockedList: string[], value) =>
-                blockedList.some((blocked) => value.endsWith(blocked))
-            ),
+            ValidateString(/^[a-zA-Z0-9_]+$/, 'includesInvalidChars'),
           ],
         ],
         email: ['', [Validators.required, Validators.email]],
