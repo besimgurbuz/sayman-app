@@ -8,6 +8,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ValidateString } from '../../../shared/form-validators/common-string.validator';
 import { ValidateFieldsAreMatched } from '../../../shared/form-validators/match.validator';
 import { PROGRESS_SUBJECT } from '../../../tokens';
+import { EMAIL_REGEX } from '../../../utils/email.regex';
 import { User } from '../../models/user.model';
 import { RegisterService } from '../../services/register.service';
 
@@ -68,7 +69,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
             ValidateString(/^[a-zA-Z0-9_]+$/, 'includesInvalidChars'),
           ],
         ],
-        email: ['', [Validators.required, Validators.email]],
+        email: [
+          '',
+          [Validators.required, ValidateString(EMAIL_REGEX, 'email')],
+        ],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
       },

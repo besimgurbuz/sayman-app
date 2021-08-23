@@ -54,7 +54,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         filter((isRedirected) => isRedirected),
         tap(() =>
           this._snackBar.open(
-            'Looks like your session is expired. Shall we fix that?',
+            'Looks like your session is expired. Shall we fix this?',
             'Close',
             {
               horizontalPosition: 'center',
