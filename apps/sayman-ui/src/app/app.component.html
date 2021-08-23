@@ -1,9 +1,4 @@
 <sayman-app-navbar>
-  <mat-progress-bar
-    *ngIf="routeChange$ | async"
-    class="route-change-progress-bar"
-    color="accent"
-    mode="query"
-  ></mat-progress-bar>
+  <sayman-app-progress></sayman-app-progress>
   <router-outlet></router-outlet>
 </sayman-app-navbar>

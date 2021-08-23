@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -9,9 +9,10 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { catchError, filter, map, tap } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
+import { PROGRESS_SUBJECT } from '../../../tokens';
 
 @Component({
   selector: 'sayman-app-sign-in',
@@ -19,18 +20,22 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent implements OnInit, OnDestroy {
+  private progressSubject: Subject<boolean>;
   loginFormGroup: FormGroup;
   authenticationSubs: Subscription;
   redirectedSubs: Subscription;
   invalidCredentials = false;
 
   constructor(
+    @Inject(PROGRESS_SUBJECT) progressSubject: Subject<boolean>,
     private fb: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private _snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.progressSubject = progressSubject;
+  }
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
@@ -69,13 +74,19 @@ export class SignInComponent implements OnInit, OnDestroy {
   handleLogin() {
     if (this.loginFormGroup.valid) {
       const { username, password } = this.loginFormGroup.controls;
+      this.progressSubject.next(true);
+
       this.authenticationSubs = this.authService
         .authenticate(username.value, password.value)
         .subscribe(
-          () => this.router.navigate(['/dashboard']),
+          () => {
+            this.progressSubject.next(false);
+            this.router.navigate(['/dashboard']);
+          },
           (error: HttpErrorResponse) => {
             let message = 'Username or password is incorrect.';
             let panelClass = '';
+            this.progressSubject.next(false);
 
             if (error.status === 500 || error.status === 0) {
               message =

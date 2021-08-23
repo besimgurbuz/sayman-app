@@ -1,12 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { ValidateString } from '../../../shared/form-validators/common-string.validator';
 import { ValidateFieldsAreMatched } from '../../../shared/form-validators/match.validator';
+import { PROGRESS_SUBJECT } from '../../../tokens';
 import { User } from '../../models/user.model';
 import { RegisterService } from '../../services/register.service';
 
@@ -16,6 +17,7 @@ import { RegisterService } from '../../services/register.service';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit, OnDestroy {
+  progressSubject: Subject<boolean>;
   signUpGroup: FormGroup;
   registerSubs: Subscription;
 
@@ -39,12 +41,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
   };
 
   constructor(
+    @Inject(PROGRESS_SUBJECT) progressSubject: Subject<boolean>,
     private fb: FormBuilder,
     private authService: AuthService,
     private registerService: RegisterService,
     private router: Router,
     private _snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.progressSubject = progressSubject;
+  }
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
@@ -79,6 +84,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   handleRegister() {
     if (!this.signUpGroup.invalid) {
+      this.progressSubject.next(true);
       const newUser: User = {
         username: this.signUpGroup.controls.username.value,
         email: this.signUpGroup.controls.email.value,
@@ -86,9 +92,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
       };
 
       this.registerSubs = this.registerService.register(newUser).subscribe(
-        (res) => console.log(res),
+        (res) => {
+          this.progressSubject.next(false);
+          this.router.navigate(['/user/login']);
+        },
         (error: HttpErrorResponse) => {
           let message = 'Unexpected error accoured.';
+          this.progressSubject.next(false);
 
           if (error.status === 500 || error.status === 0) {
             message =
