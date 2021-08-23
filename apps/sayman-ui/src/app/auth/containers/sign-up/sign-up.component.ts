@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -86,16 +87,23 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
       this.registerSubs = this.registerService.register(newUser).subscribe(
         (res) => console.log(res),
-        (error) =>
-          this._snackBar.open(
-            'We are currently unable to fulfill your registration request. Try again later.',
-            'Close',
-            {
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-              panelClass: 'internal-error-modal',
-            }
-          )
+        (error: HttpErrorResponse) => {
+          let message = 'Unexpected error accoured.';
+
+          if (error.status === 500 || error.status === 0) {
+            message =
+              'We are currently unable to fulfill your registration request. Try again later.';
+          } else if (error.status === 400 || error.status === 409) {
+            const errors = error.error as Record<string, string>;
+            message = errors.message || Object.values(errors).join('.\n');
+          }
+
+          this._snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: 'internal-error-modal',
+          });
+        }
       );
     }
   }

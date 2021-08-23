@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContainerComponent } from './container/container.component';
-import { CardViewComponent } from './card-view/card-view.component';
-import { FormErrorComponent } from './form-error/form-error.component';
+import { NgModule } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CardViewComponent } from './components/card-view/card-view.component';
+import { ContainerComponent } from './components/container/container.component';
+import { FormErrorComponent } from './components/form-error/form-error.component';
 
 @NgModule({
   declarations: [ContainerComponent, CardViewComponent, FormErrorComponent],

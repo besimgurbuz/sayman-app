@@ -16,16 +16,15 @@ import { LandingComponent } from './components/landing/landing.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CoreModule } from './core/core.module';
 import { AuthGuard } from './guards/auth.guard';
+import { SharedModule } from './shared/shared.module';
 import { BASE_URL_TOKEN } from './tokens';
-
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, LandingComponent],
   imports: [
     CoreModule,
-    BrowserModule,
+    SharedModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
     LayoutModule,
     MatProgressBarModule,
     MatToolbarModule,
