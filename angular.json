@@ -51,7 +51,10 @@
               "apps/sayman-ui/src/favicon.ico",
               "apps/sayman-ui/src/assets"
             ],
-            "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "apps/sayman-ui/src/styles.scss"],
+            "styles": [
+              "apps/sayman-ui/src/theme.scss",
+              "apps/sayman-ui/src/styles.scss"
+            ],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
