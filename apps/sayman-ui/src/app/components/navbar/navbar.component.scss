@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .sidenav-container {
   height: 100%;
 }
@@ -14,6 +16,17 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  padding: 0 25rem;
+  background-color: transparent !important;
+  color: var(--app-primary-color);
+
+  @media screen and (max-width: 1500px) {
+    padding: 0 10rem;
+  }
+
+  @media screen and (max-width: $breakpoint-mediumscreen) {
+    padding: 0.5rem;
+  }
 }
 
 .content {
@@ -28,7 +41,8 @@
   }
 
   #banner {
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: 600;
   }
 
   #content-root {

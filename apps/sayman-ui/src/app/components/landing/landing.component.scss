@@ -1,3 +1,5 @@
+@import '../../variables';
+
 :host {
   display: block;
 }
@@ -6,7 +8,56 @@
   width: 100%;
   min-height: 800px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  #landing-content {
+    .landing-header {
+      max-width: 600px;
+      font-size: 3.75rem;
+      font-weight: 500;
+      line-height: 4rem;
+      margin: 0 1px 0 0;
+      color: var(--app-primary-color);
+
+      &:last-child {
+        margin-top: 1.5rem;
+      }
+    }
+  }
+
+  #landing-img {
+    width: 501px;
+  }
+
+  @media screen and (max-width: $breakpoint-phone) {
+    #landing-content {
+      .landing-header {
+        font-size: 2rem !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 980px) {
+    flex-wrap: wrap;
+
+    #landing-content {
+      text-align: center;
+      padding: 0 1rem;
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-mediumscreen) {
+    #landing-content {
+      width: 500px;
+      .landing-header {
+        font-size: 2.75rem;
+      }
+    }
+
+    #landing-img {
+      width: 400px;
+    }
+  }
 }
