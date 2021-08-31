@@ -115,7 +115,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
           this._snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
-            panelClass: 'internal-error-modal',
+            panelClass: 'app-snack-bar',
           });
         }
       );

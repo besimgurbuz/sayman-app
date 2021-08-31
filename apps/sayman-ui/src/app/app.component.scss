@@ -3,12 +3,11 @@
   min-height: 100%;
 }
 
-::ng-deep snack-bar-container.internal-error-modal {
-  border: 2px solid var(--app-warn-color);
-  background-color: #f1f1f1;
-  color: var(--app-warn-color);
+::ng-deep snack-bar-container.app-snack-bar {
+  background-color: var(--app-warn-color);
 
+  &,
   button {
-    color: var(--app-warn-color);
+    color: var(--app-secondary-color);
   }
 }

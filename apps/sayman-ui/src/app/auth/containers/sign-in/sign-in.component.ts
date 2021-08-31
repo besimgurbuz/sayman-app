@@ -59,6 +59,7 @@ export class SignInComponent implements OnInit, OnDestroy {
             {
               horizontalPosition: 'center',
               verticalPosition: 'bottom',
+              panelClass: 'app-snack-bar',
             }
           )
         )
@@ -85,19 +86,17 @@ export class SignInComponent implements OnInit, OnDestroy {
           },
           (error: HttpErrorResponse) => {
             let message = 'Username or password is incorrect.';
-            let panelClass = '';
             this.progressSubject.next(false);
 
             if (error.status === 500 || error.status === 0) {
               message =
                 'We are currently not able to log you in. Try again later.';
-              panelClass = 'internal-error-modal';
             }
 
             this._snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'bottom',
-              panelClass: panelClass,
+              panelClass: 'app-snack-bar',
             });
           }
         );
